@@ -41,7 +41,7 @@ func LoadQuestions(r io.Reader, pool *exam.Pool) error {
 		allIsCorrect = question.IsCorrect == "all"
 		noneIsCorrect = question.IsCorrect == "all"
 
-		pool.AddQuestion(&exam.Question{
+		pool.AddQuestion(exam.Question{
 			Answers:        answers,
 			Question:       question.Question,
 			AllOfTheAbove:  question.All,

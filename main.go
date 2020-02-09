@@ -17,7 +17,7 @@ func main() {
 	var yaml string
 	var output string
 	var answers string
-	flag.Int64Var(&seed, "seed", 0, "Pick a seed for reproducable results")
+	flag.Int64Var(&seed, "seed", 0, "Pick a seed for reproducable results, -1 is random; omit to print the raw questions")
 	flag.StringVar(&yaml, "yaml", "", "Load questions from yaml file")
 	flag.StringVar(&output, "out", "/dev/stdout", "Output exam to file")
 	flag.StringVar(&answers, "answers", "/dev/stderr", "Output answers to file")
@@ -26,7 +26,7 @@ func main() {
 	if yaml == "" {
 		log.Fatal("Requires a file to load questions")
 	}
-	if seed == 0 {
+	if seed < 0 {
 		seed = time.Now().UnixNano()
 	}
 
@@ -42,8 +42,14 @@ func main() {
 	if err != nil {
 		log.Fatal("Cannot open answers file", err)
 	}
-	r := rand.New(rand.NewSource(seed))
 	pool := &exam.Pool{}
 	loader.LoadQuestions(f, pool)
-	writer.Write(out, ans, pool.Randomize(r))
+	var questions []exam.Question
+	if seed > 0 {
+		r := rand.New(rand.NewSource(seed))
+		questions = pool.Randomize(r)
+	} else {
+		questions = pool.BasicQuestions()
+	}
+	writer.Write(out, ans, questions)
 }

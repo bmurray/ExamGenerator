@@ -13,9 +13,9 @@ type Answer struct {
 	Correct bool
 }
 
-func (q Question) Randomize(r Rand) *Question {
+func (q Question) Randomize(r Rand) Question {
 
-	nq := &Question{
+	nq := Question{
 		Question:       q.Question,
 		Answers:        make([]Answer, len(q.Answers)),
 		AllOfTheAbove:  q.AllOfTheAbove,

@@ -8,7 +8,7 @@ import (
 	"github.com/bmurray/ExamGenerator/exam"
 )
 
-func Write(out, ans io.Writer, questions []*exam.Question) {
+func Write(out, ans io.Writer, questions []exam.Question) {
 	for n, qu := range questions {
 		fmt.Fprintf(out, "%d: %s\n", n+1, qu.Question)
 		var c []string
