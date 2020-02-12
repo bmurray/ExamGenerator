@@ -49,7 +49,7 @@ func main() {
 		r := rand.New(rand.NewSource(seed))
 		questions = pool.Randomize(r)
 	} else {
-		questions = pool.BasicQuestions()
+		questions = pool.Questions()
 	}
 	writer.Write(out, ans, questions)
 }

@@ -1,5 +1,9 @@
 package exam
 
+type Questioner interface {
+	Randomize(Rand) []Question
+	Questions() []Question
+}
 type Question struct {
 	Question       string
 	Answers        []Answer
@@ -12,8 +16,11 @@ type Answer struct {
 	Answer  string
 	Correct bool
 }
+type Group struct {
+	Questions []Question
+}
 
-func (q Question) Randomize(r Rand) Question {
+func (q Question) Randomize(r Rand) []Question {
 
 	nq := Question{
 		Question:       q.Question,
@@ -27,5 +34,9 @@ func (q Question) Randomize(r Rand) Question {
 		nq.Answers[i] = q.Answers[j]
 	}
 
-	return nq
+	return []Question{nq}
+}
+func (q Question) Questions() []Question {
+
+	return []Question{q}
 }

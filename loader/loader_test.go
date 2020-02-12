@@ -28,7 +28,20 @@ questions:
   - "Y"
   - Z
   all: true
-  none: false`
+  none: false
+- group:
+  - question: Group Question A
+    correct:
+    - Y
+    answers:
+    - Z
+    - P
+  - question: Group Question B
+    correct: 
+    - U
+    answers:
+    - Z
+    - P`
 
 func TestLoader(t *testing.T) {
 	r := strings.NewReader(data)
