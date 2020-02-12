@@ -30,24 +30,36 @@ func LoadQuestions(r io.Reader, pool exam.QuestionPool) error {
 		return fmt.Errorf("Cannot decode input: %w", err)
 	}
 	for _, question := range q.Q {
-		addQuestion(question, pool)
-
+		addToPool("", question, pool)
 	}
 	return nil
 }
-func addQuestion(question Question, pool exam.QuestionPool) error {
+func addToPool(prefix string, question Question, pool exam.QuestionPool) error {
 	if len(question.Group) > 0 {
-		p2 := &exam.Pool{}
-		for _, nq := range question.Group {
-			err := addQuestion(nq, p2)
-			if err != nil {
-				return err
-			}
-		}
-		pool.AddQuestion(p2)
+		return addGroup(prefix, question, pool)
+	} else {
+		return addQuestion(prefix, question, pool)
 	}
+}
+func addGroup(prefix string, question Question, pool exam.QuestionPool) error {
+	p2 := &exam.Pool{}
+	pr := question.Question
+	if len(prefix) > 0 {
+		pr = fmt.Sprintf("%s, %s", prefix, question.Question)
+	}
+	for _, nq := range question.Group {
+		err := addToPool(pr, nq, p2)
+		if err != nil {
+			return err
+		}
+	}
+	pool.AddQuestion(p2)
+	return nil
+}
+func addQuestion(prefix string, question Question, pool exam.QuestionPool) error {
+
 	if question.Question == "" {
-		return nil
+		return fmt.Errorf("Invalid question text")
 	}
 	var answers []exam.Answer
 	for _, c := range question.Correct {
@@ -61,9 +73,13 @@ func addQuestion(question Question, pool exam.QuestionPool) error {
 	allIsCorrect = question.IsCorrect == "all"
 	noneIsCorrect = question.IsCorrect == "all"
 
+	pr := question.Question
+	if len(prefix) > 0 {
+		pr = fmt.Sprintf("(%s) %s", prefix, question.Question)
+	}
 	pool.AddQuestion(exam.Question{
 		Answers:        answers,
-		Question:       question.Question,
+		Question:       pr,
 		AllOfTheAbove:  question.All,
 		NoneOfTheAbove: question.None,
 		AllIsCorrect:   allIsCorrect,

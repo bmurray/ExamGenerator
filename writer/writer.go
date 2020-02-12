@@ -36,6 +36,7 @@ func Write(out, ans io.Writer, questions []exam.Question) {
 			}
 			i += 1
 		}
+		fmt.Fprintf(out, "\n")
 		fmt.Fprintf(ans, "%d: %s\n", n+1, strings.Join(c, ","))
 		// fmt.Fprintln(ans, qu.Question)
 	}

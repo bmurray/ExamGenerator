@@ -29,7 +29,8 @@ questions:
   - Z
   all: true
   none: false
-- group:
+- question: "Appendix A"
+  group:
   - question: Group Question A
     correct:
     - Y

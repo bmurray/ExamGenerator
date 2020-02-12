@@ -16,9 +16,6 @@ type Answer struct {
 	Answer  string
 	Correct bool
 }
-type Group struct {
-	Questions []Question
-}
 
 func (q Question) Randomize(r Rand) []Question {
 
