@@ -1,5 +1,7 @@
 package exam
 
+import "fmt"
+
 type Questioner interface {
 	Randomize(Rand) []Question
 	Questions() []Question
@@ -36,4 +38,53 @@ func (q Question) Randomize(r Rand) []Question {
 func (q Question) Questions() []Question {
 
 	return []Question{q}
+}
+
+func (qu Question) AllAnswers() []string {
+	var c []string
+	for i, a := range qu.Answers {
+		x := string(i%26 + 65)
+		c = append(c, fmt.Sprintf("%s. %s\n", x, a.Answer))
+		if a.Correct {
+		}
+	}
+	i := len(qu.Answers)
+	if qu.AllOfTheAbove {
+		x := string(i%26 + 65)
+		c = append(c, fmt.Sprintf("%s. %s\n", x, "All of the above"))
+		i += 1
+	}
+	if qu.NoneOfTheAbove {
+		x := string(i%26 + 65)
+		c = append(c, fmt.Sprintf("%s. %s\n", x, "None of the above"))
+		i += 1
+	}
+
+	return c
+
+}
+func (qu Question) CorrectAnswers() []string {
+	var c []string
+	for i, a := range qu.Answers {
+		x := string(i%26 + 65)
+		if a.Correct {
+			c = append(c, x)
+		}
+	}
+	i := len(qu.Answers)
+	if qu.AllOfTheAbove {
+		x := string(i%26 + 65)
+		if qu.AllIsCorrect {
+			c = append(c, x)
+		}
+		i += 1
+	}
+	if qu.NoneOfTheAbove {
+		x := string(i%26 + 65)
+		if qu.NoneIsCorrect {
+			c = append(c, x)
+		}
+		i += 1
+	}
+	return c
 }
