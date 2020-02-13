@@ -44,20 +44,20 @@ func (qu Question) AllAnswers() []string {
 	var c []string
 	for i, a := range qu.Answers {
 		x := string(i%26 + 65)
-		c = append(c, fmt.Sprintf("%s. %s\n", x, a.Answer))
+		c = append(c, fmt.Sprintf("%s. %s", x, a.Answer))
 		if a.Correct {
 		}
 	}
 	i := len(qu.Answers)
 	if qu.AllOfTheAbove {
 		x := string(i%26 + 65)
-		c = append(c, fmt.Sprintf("%s. %s\n", x, "All of the above"))
-		i += 1
+		c = append(c, fmt.Sprintf("%s. %s", x, "All of the above"))
+		i++
 	}
 	if qu.NoneOfTheAbove {
 		x := string(i%26 + 65)
-		c = append(c, fmt.Sprintf("%s. %s\n", x, "None of the above"))
-		i += 1
+		c = append(c, fmt.Sprintf("%s. %s", x, "None of the above"))
+		i++
 	}
 
 	return c
@@ -77,14 +77,14 @@ func (qu Question) CorrectAnswers() []string {
 		if qu.AllIsCorrect {
 			c = append(c, x)
 		}
-		i += 1
+		i++
 	}
 	if qu.NoneOfTheAbove {
 		x := string(i%26 + 65)
 		if qu.NoneIsCorrect {
 			c = append(c, x)
 		}
-		i += 1
+		i++
 	}
 	return c
 }
