@@ -4,7 +4,7 @@ const question_templ = `
 <!DOCTYPE html>
 <html>
 <head>
-<title>Questions</title>
+<title>Questions ( {{ .Seed }} )</title>
 <style type="text/css">
 .question {
 	break-inside: avoid;

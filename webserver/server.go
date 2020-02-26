@@ -29,8 +29,14 @@ func (s *Server) getAnswers() func(w http.ResponseWriter, req *http.Request) {
 		log.Fatal("Cannot parse answers template", err)
 	}
 	return func(w http.ResponseWriter, req *http.Request) {
-		questions := s.getQuestions(req)
-		err := t.Execute(w, struct{ Questions []exam.Question }{questions})
+		seed, questions := s.getQuestions(req)
+		err := t.Execute(w, struct {
+			Seed      int64
+			Questions []exam.Question
+		}{
+			Seed:      seed,
+			Questions: questions,
+		})
 		if err != nil {
 			log.Println("Error executing template", err)
 		}
@@ -44,14 +50,17 @@ func (s *Server) generateQuestions() func(w http.ResponseWriter, req *http.Reque
 	}
 
 	return func(w http.ResponseWriter, req *http.Request) {
-		questions := s.getQuestions(req)
-		err := t.Execute(w, struct{ Questions []exam.Question }{questions})
+		seed, questions := s.getQuestions(req)
+		err := t.Execute(w, struct {
+			Seed      int64
+			Questions []exam.Question
+		}{seed, questions})
 		if err != nil {
 			log.Println("Error executing template", err)
 		}
 	}
 }
-func (s Server) getQuestions(req *http.Request) []exam.Question {
+func (s Server) getQuestions(req *http.Request) (int64, []exam.Question) {
 	seedQ := req.URL.Query().Get("seed")
 	seed, _ := strconv.ParseInt(seedQ, 10, 64)
 	var questions []exam.Question
@@ -61,7 +70,7 @@ func (s Server) getQuestions(req *http.Request) []exam.Question {
 	} else {
 		questions = s.pool.Questions()
 	}
-	return questions
+	return seed, questions
 }
 
 // StartServer starts a web server to print question pools
