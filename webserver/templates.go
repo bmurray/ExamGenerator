@@ -40,12 +40,7 @@ const answer_templ = `
 <!DOCTYPE html>
 <html>
 <head>
-<title>Answers</title>
-<style type="text/css">
-.question {
-	break-inside: avoid;
-}
-</style>
+<title>Answers {{ .Seed }}</title>
 </head>
 <body>
 {{range $i, $q := .Questions}}
