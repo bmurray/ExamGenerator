@@ -71,7 +71,7 @@ func addQuestion(prefix string, question Question, pool exam.QuestionPool) error
 	allIsCorrect := false
 	noneIsCorrect := false
 	allIsCorrect = question.IsCorrect == "all"
-	noneIsCorrect = question.IsCorrect == "all"
+	noneIsCorrect = question.IsCorrect == "none"
 
 	pr := question.Question
 	if len(prefix) > 0 {
