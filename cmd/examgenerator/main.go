@@ -48,7 +48,10 @@ func main() {
 		log.Fatal("Cannot open answers file", err)
 	}
 	pool := &exam.Pool{}
-	loader.LoadQuestions(f, pool)
+	err = loader.LoadQuestions(f, pool)
+	if err != nil {
+		log.Fatal("Cannot load questions", err)
+	}
 	if len(listen) > 0 {
 		c := make(chan os.Signal, 1)
 		signal.Notify(c, os.Interrupt)
